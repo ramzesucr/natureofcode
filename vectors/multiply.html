@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="../assets/css/main.css">
+	</head>
+	<body>
+		<canvas id="canva" width="300px" height="200px" onmousemove="mouseMove(event)"></canvas>
+		<button class="btn-start" onclick="start()">Start</button>
+
+
+		<script type="text/javascript" src="../assets/js/Vector.js"></script>
+		<script type="text/javascript">
+			var canva = document.getElementById('canva');
+			var canvasWidth = canva.width;
+			var canvasHeight = canva.height;
+
+			var context = canva.getContext('2d');
+
+			var running = false;
+			var mouse = new Vector(0, 0);
+			var center = new Vector(canvasWidth / 2, canvasHeight / 2);
+			var line = new Vector(0, 0);
+
+			function start() {
+				running = true;
+				frame();
+			}
+
+			function frame() {
+				if(!running)
+					return;
+
+				update();
+				render();
+
+				requestAnimationFrame(frame);
+			}
+
+			function update() {
+				line = Vector.sub(mouse, center);
+				line.mult(0.5);
+			}
+
+			function render() {
+				context.clearRect(0, 0, canvasWidth, canvasHeight);
+				context.save();
+
+				context.translate(center.x, center.y);
+				context.beginPath();
+				context.moveTo(0, 0);
+				context.lineTo(line.x, line.y);
+				context.stroke();
+				context.closePath();
+
+				context.restore();
+			}
+
+			function mouseMove(e) {
+				mouse.x = e.offsetX;
+				mouse.y = e.offsetY;
+			}
+
+		</script>
+	</body>
+</html>

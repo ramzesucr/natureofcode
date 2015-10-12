@@ -1,0 +1,81 @@
+<html>
+	<head>
+	</head>
+	<body>
+		
+		<canvas id="canva" width="500px" height="400px" style="border: 1px solid black;"></canvas>
+
+		<button onclick="start()" style="vertical-align:top;">Start</button>
+
+		<script type="text/javascript" src="assets/js/Vector.js"></script>
+		<script type="text/javascript" src="assets/js/Particle.js"></script>
+
+		<script type="text/javascript">
+			var canva = document.getElementById('canva');
+			var context = canva.getContext('2d');
+			
+
+			var canvasWidth = canva.width;
+			var canvasHeight = canva.height;
+			var colors = ['black', 'blue', 'green', 'yellow', 'red'];
+
+			var running = false;
+			var particles = [];
+
+			for(var i = 0; i < 100; i++) {
+				var particle = generateRandomParticle();
+				particles.push(particle);
+			}
+
+			function start() {
+				running = true;
+				frame();
+			}
+
+			function frame() {
+				if(!running)
+					return;
+
+				update();
+				render();
+
+				requestAnimationFrame(frame);
+			}
+
+			function update() {
+				for(var i = 0; i < particles.length; i++) {
+
+					particles[i].update();
+
+					if(particles[i].location.x >= canvasWidth || particles[i].location.x <= 0) {
+						particles[i].velocity.x *= -1;
+					}
+					if(particles[i].location.y >= canvasHeight || particles[i].location.y <= 0) {
+						particles[i].velocity.y *= -1;
+					}
+				}
+			}
+
+			function render() {
+				context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+				for(var i = 0; i < particles.length; i++) {
+					particles[i].draw(context);
+				}
+			}
+
+			function generateRandomParticle() {
+				var randColor = colors[Math.round(Math.random() * (colors.length - 1))];
+				var randRadius = Math.round(Math.random() * (10 - 5) + 5);
+				return new Particle({
+					color: randColor,
+					radius: randRadius,
+					location: new Vector(Math.random() * canvasWidth, Math.random() * canvasHeight),
+					velocity: new Vector(Math.random() * 10 * (Math.random() < 0.5 ? -1 : 1), Math.random() * 10 * (Math.random() < 0.5 ? -1 : 1))
+				});
+			}
+
+
+		</script>
+	</body>
+</html>

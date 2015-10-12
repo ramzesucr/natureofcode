@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="../assets/css/main.css">
+	</head>
+	<body>
+		<canvas id="canva" width="300px" height="200px"></canvas>
+
+		<script type="text/javascript" src="../global/js/Vector.js"></script>
+		<script type="text/javascript">
+			var canva = document.getElementById('canva');
+			var context = canva.getContext('2d');
+
+			var running = false;
+
+			function start() {
+				running = true;
+				frame();
+			}
+
+			function frame() {
+				if(!running)
+					return;
+
+				update();
+				render();
+
+				requestAnimationFrame(frame);
+			}
+
+			function update() {
+
+			}
+
+			function render() {
+				
+			}
+
+		</script>
+	</body>
+</html>
